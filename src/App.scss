@@ -1,0 +1,14 @@
+.ant-pagination-item-active {
+  background-color: #1890ff !important; /* Синий фон */
+  border-color: #1890ff !important;
+}
+.ant-pagination-item-active a {
+  color: white !important; /* Белый текст */
+}
+
+.article-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

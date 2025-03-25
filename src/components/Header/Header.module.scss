@@ -1,0 +1,29 @@
+@use "../../scss/variabels.scss" as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  border-bottom: 1px solid rgb(224, 224, 224);
+  background-color: $background-color-base;
+  padding-left: 22px;
+  padding-right: 22px;
+  font-size: $H6;
+  color: $heading-color;
+}
+
+.button {
+  border: 0;
+  background-color: transparent;
+  font-size: $H6;
+  margin-left: 22px;
+}
+
+.SignUp {
+  border: 1px #52c41a solid;
+  border-radius: 3px;
+  color: #52c41a;
+  height: 51px;
+  width: 109px;
+}
