@@ -4,6 +4,7 @@ import { HeartOutlined } from "@ant-design/icons";
 import { Rate } from "antd";
 import { Tag } from "antd";
 import { Avatar } from "antd";
+import { CustomLink } from "../../CustomLink/CustomLink";
 
 const ArticleCard = ({ article }) => {
   const creationDate = new Date(article.createdAt).toLocaleDateString("en-US", {
@@ -11,22 +12,33 @@ const ArticleCard = ({ article }) => {
     month: "long",
     day: "numeric",
   });
-  const markdown = article.body;
+  const markdown = article.description;
+
+  const handleClick = () => {
+    console.log(article);
+  };
+
   return (
     <div className={style.container}>
       <div className={style.top_container}>
         <div className={style.title_container}>
           <div className={style.title}>
-            {article.title}
+            <CustomLink to={`/articles/${article.slug}`} onClick={handleClick}>
+              {" "}
+              {article.title}
+            </CustomLink>
+
             <Rate count={1} character={<HeartOutlined />} disabled />
             <span className={style.favoritesCount}>
               {article.favoritesCount}
             </span>
           </div>
           <div className={style.tag_container}>
-            {article.tagList.map((tag) => (
-              <Tag key={tag}>{tag}</Tag>
-            ))}
+            {article.tagList.length > 0 && article.tagList
+              ? article.tagList.map((tag, index) => (
+                  <Tag key={`${index}${tag}`}>{tag}</Tag>
+                ))
+              : null}
           </div>
         </div>
         <div className={style.author_container}>

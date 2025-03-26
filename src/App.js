@@ -1,33 +1,24 @@
 import "./App.scss";
-import ArticlesList from "./components/ArticlesList/ArticlesList";
-import Header from "./components/Header/Header";
-import { Pagination } from "antd";
-import { change_page } from "./redux/articlesListSlice";
-import { useDispatch, useSelector } from "react-redux";
+
+import Layout from "./components/Layout/Layout";
+import HomePage from "./pages/HomePage";
+import NotFoundPage from "./pages/NotFoundPage";
+import { Routes, Route } from "react-router-dom";
+import { SingleArticle } from "./pages/SingleArticlePage";
+import { SignUpPage } from "./pages/SignUpPage";
 
 function App() {
-  const current = useSelector((store) => store.articlesList.pageNumber);
-  const total = useSelector((store) => store.articlesList.totalPages);
-
-  const dispatch = useDispatch();
-  const handleChange = (page) => {
-    dispatch(change_page(page));
-  };
   return (
     <div className="App">
-      <Header />
-      <div className="article-container">
-        <ArticlesList />
-        <Pagination
-          size="small"
-          defaultCurrent={1}
-          current={current}
-          total={total * 10}
-          className="pagination"
-          onChange={handleChange}
-          showSizeChanger={false}
-        />
-      </div>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="/articles" element={<HomePage />} />
+          <Route path="/articles/:slug" element={<SingleArticle />} />
+          <Route path="/signUp" element={<SignUpPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
     </div>
   );
 }

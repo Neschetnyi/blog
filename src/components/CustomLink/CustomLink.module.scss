@@ -1,0 +1,7 @@
+@use "../../scss/variabels.scss" as *;
+
+.active {
+  color: $info-color;
+  font-size: $H5;
+  text-decoration: none;
+}

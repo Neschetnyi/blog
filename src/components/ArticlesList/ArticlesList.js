@@ -16,11 +16,11 @@ const ArticlesList = () => {
     <div>
       {loading ? (
         <div className={style.loading}>Loading...</div>
-      ) : (
+      ) : articles ? (
         articles.map((article) => (
-          <ArticleCard key={article.title} article={article} />
+          <ArticleCard key={article.slug} article={article} />
         ))
-      )}
+      ) : null}
     </div>
   );
 };
