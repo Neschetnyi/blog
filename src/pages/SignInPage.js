@@ -5,7 +5,7 @@ import * as yup from "yup";
 import styles from "./SignUpPage.module.scss";
 import { loginUser } from "../redux/userSlice";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   email: yup
@@ -90,9 +90,9 @@ function SignInPage() {
       </form>
       <p className={styles.signInText}>
         Don't have an account?{" "}
-        <a href="#" className={styles.link}>
+        <Link to="/signUp" className={styles.link}>
           Sign up
-        </a>
+        </Link>
       </p>
     </div>
   );
