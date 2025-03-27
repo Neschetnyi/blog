@@ -13,17 +13,40 @@
   color: $heading-color;
 }
 
+.buttuns_container {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  margin-left: 10px;
+}
+
 .button {
   border: 0;
   background-color: transparent;
   font-size: $H6;
   margin-left: 22px;
+  cursor: pointer;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
 }
 
 .SignUp {
   border: 1px #52c41a solid;
   border-radius: 3px;
   color: #52c41a;
+  height: 51px;
+  width: 109px;
+}
+
+.logout {
+  border: 1px $heading-color solid;
+  border-radius: 3px;
+  color: $heading-color;
   height: 51px;
   width: 109px;
 }
@@ -38,4 +61,5 @@ a {
   font-size: $H6;
   color: $heading-color;
   text-decoration: none;
+  cursor: pointer;
 }
