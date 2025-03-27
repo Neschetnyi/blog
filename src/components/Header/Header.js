@@ -28,6 +28,15 @@ const Header = () => {
         {username && username !== "" ? (
           <>
             <button
+              className={`${style.button} ${style.createArticle}`}
+              onClick={() => {
+                console.log("Create Article");
+                navigate("/");
+              }}
+            >
+              Create Article
+            </button>
+            <button
               className={`${style.button} ${style.profile}`}
               onClick={() => navigate("/profile")}
             >

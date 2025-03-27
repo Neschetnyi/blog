@@ -9,9 +9,11 @@ const ArticlesList = () => {
   const loading = useSelector((store) => store.articlesList.loading);
   const articles = useSelector((store) => store.articlesList.articles);
   const page = useSelector((store) => store.articlesList.pageNumber);
+  const username = useSelector((store) => store.user.username);
+
   useEffect(() => {
     dispatch(fetchArticles());
-  }, [page]);
+  }, [page, username]);
   return (
     <div>
       {loading ? (

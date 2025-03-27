@@ -28,7 +28,11 @@ const ArticleCard = ({ article }) => {
               {article.title}
             </CustomLink>
 
-            <Rate count={1} character={<HeartOutlined />} disabled />
+            <Rate
+              count={1}
+              character={<HeartOutlined />}
+              disabled={!localStorage.getItem("user")}
+            />
             <span className={style.favoritesCount}>
               {article.favoritesCount}
             </span>

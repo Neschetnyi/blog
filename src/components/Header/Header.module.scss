@@ -43,6 +43,15 @@
   width: 109px;
 }
 
+.createArticle {
+  word-wrap: normal;
+  font-size: $font-size-lg;
+  border: 1px #52c41a solid;
+  border-radius: 3px;
+  color: #52c41a;
+  padding: 5px;
+}
+
 .logout {
   border: 1px $heading-color solid;
   border-radius: 3px;
