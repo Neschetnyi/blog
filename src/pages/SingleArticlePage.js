@@ -49,7 +49,11 @@ const SingleArticle = () => {
           <div className={style.title}>
             {title}
 
-            <Rate count={1} character={<HeartOutlined />} disabled />
+            <Rate
+              count={1}
+              character={<HeartOutlined />}
+              disabled={!localStorage.getItem("user")}
+            />
             <span className={style.favoritesCount}>{favoritesCount}</span>
           </div>
           <div className={style.tag_container}>

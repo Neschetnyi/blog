@@ -153,7 +153,7 @@ function SignUpPage() {
       <p className={styles.signInText}>
         Already have an account?{" "}
         <Link to="/signIn" className={styles.link}>
-          Sign up
+          Sign in
         </Link>
       </p>
     </div>
