@@ -10,7 +10,7 @@ import { SignInPage } from "./pages/SignInPage";
 import { EditUserPage } from "./pages/EditUserPage";
 import { RequireAuth } from "./hoc/RequireAuth";
 import { CreateArticlePage } from "./pages/CreateArticlePage";
-import { EditPostPage } from "./pages/EditPostPage";
+import { EditArticlePage } from "./pages/EditArticlePage";
 
 function App() {
   return (
@@ -35,7 +35,7 @@ function App() {
             path="/articles/:slug/edit"
             element={
               <RequireAuth>
-                <EditPostPage />
+                <EditArticlePage />
               </RequireAuth>
             }
           />
