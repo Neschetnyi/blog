@@ -1,38 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ArticleForm } from "../components/ArticleForm/ArticleForm"; // Импортируем форму
+import style from "./ArticleForm.module.scss";
 
 const EditArticlePage = () => {
-  const navigate = useNavigate();
-  const [articleData, setArticleData] = useState(null);
+  const location = useLocation();
+  const { articleData } = location.state || {}; // Извлекаем данные из state
+
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    body: "",
+    tagList: [],
+  });
 
   useEffect(() => {
-    // Здесь можно загрузить данные статьи для редактирования (например, через API)
-    setArticleData({
-      title: "Sample Article",
-      description: "This is a sample article description.",
-      text: "Here is the article text.",
-      tags: ["Tag1", "Tag2"], // Предположим, что у нас есть существующие теги
-    });
-  }, []);
+    if (articleData) {
+      // Если данные статьи существуют, обновляем состояние
+      setFormData({
+        title: articleData.article.title || "",
+        description: articleData.article.description || "",
+        body: articleData.article.body || "",
+        tagList: articleData.article.tagList || [],
+      });
+    }
+  }, [articleData]);
 
-  const handleEditArticle = (formData) => {
-    console.log("Editing article:", formData);
-    // Здесь можно отправить обновленные данные на сервер
-    navigate("/somewhere"); // Перенаправляем после успешного редактирования
-  };
+  console.log("articleData in EditPage", articleData);
 
   if (!articleData) {
-    return <div>Loading...</div>; // Заглушка, пока загружается статья
+    return <div>Article data is not available.</div>;
   }
 
+  // Функция для обработки отправки данных
+  const handleEditArticle = (updatedData) => {
+    console.log("Updated article data:", updatedData);
+    // Здесь можно отправить данные на сервер, например, с помощью dispatch
+    // dispatch(updateArticle(updatedData));
+  };
+
   return (
-    <div>
+    <div className={style.container}>
       <h2>Edit Article</h2>
+      {/* Передаем данные статьи в компонент формы */}
       <ArticleForm
-        existingArticle={articleData} // Передаем статью для редактирования
-        existingTags={articleData.tags} // Передаем теги для редактирования
-        onSubmit={handleEditArticle}
+        existingArticle={formData} // Передаем данные из состояния
+        existingTags={formData.tagList} // Теги из состояния
+        onSubmit={handleEditArticle} // Обработчик отправки данных
       />
     </div>
   );

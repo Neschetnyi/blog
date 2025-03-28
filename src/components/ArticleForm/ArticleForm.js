@@ -11,7 +11,9 @@ const schema = yup.object().shape({
 });
 
 const ArticleForm = ({ existingArticle = {}, existingTags = [], onSubmit }) => {
-  const { title, description, text } = existingArticle;
+  const { title, description, body } = existingArticle;
+  console.log("existingArticle in Article form", existingArticle);
+  console.log("existingTags in Article form", existingTags);
 
   const {
     register,
@@ -23,7 +25,7 @@ const ArticleForm = ({ existingArticle = {}, existingTags = [], onSubmit }) => {
     defaultValues: {
       title: title || "",
       description: description || "",
-      text: text || "",
+      text: body || "",
     },
   });
 
@@ -36,9 +38,22 @@ const ArticleForm = ({ existingArticle = {}, existingTags = [], onSubmit }) => {
     }
   }, [existingTags]);
 
+  // Обновление значений формы при изменении данных
+  useEffect(() => {
+    if (existingArticle.title) {
+      setValue("title", existingArticle.title);
+    }
+    if (existingArticle.description) {
+      setValue("description", existingArticle.description);
+    }
+    if (existingArticle.body) {
+      setValue("text", existingArticle.body);
+    }
+  }, [existingArticle, setValue]);
+
   const addTag = () => {
-    if (input.trim() && !tags.some((tag) => tag.name === input.trim())) {
-      setTags([...tags, { name: input.trim(), isEditing: false }]);
+    if (input.trim() && !tags.includes(input.trim())) {
+      setTags([...tags, input.trim()]);
       setInput("");
     }
   };
@@ -51,14 +66,8 @@ const ArticleForm = ({ existingArticle = {}, existingTags = [], onSubmit }) => {
     setTags(tags.filter((_, i) => i !== index));
   };
 
-  const updateTag = (index, newName) => {
-    const newTags = [...tags];
-    newTags[index].name = newName;
-    setTags(newTags);
-  };
-
   const handleFormSubmit = (data) => {
-    onSubmit({ ...data, tags: tags.map((tag) => tag.name) });
+    onSubmit({ ...data, tags });
   };
 
   return (
@@ -90,13 +99,14 @@ const ArticleForm = ({ existingArticle = {}, existingTags = [], onSubmit }) => {
 
       <div className={styles.inputGroup}>
         <label>Text</label>
-        <input
-          placeholder="text"
+        <textarea
+          placeholder="Enter article text"
           className={`${styles.inputField} ${
             errors.text ? styles.inputError : ""
           }`}
-          type="text"
           {...register("text")}
+          rows="9" // Установите количество строк по своему усмотрению
+          style={{ resize: "none" }} // Отключаем изменение размера
         />
         <p className={styles.errorText}>{errors.text?.message}</p>
       </div>
@@ -110,32 +120,40 @@ const ArticleForm = ({ existingArticle = {}, existingTags = [], onSubmit }) => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Введите тег..."
-            className={styles.inputField}
+            className={styles.tagInputField}
           />
           <button
             type="button"
             onClick={clearInput}
-            className={styles.deleteButton}
+            className={`${styles.deleteButton} ${styles.little_button}`}
           >
             Delete
           </button>
-          <button type="button" onClick={addTag} className={styles.addButton}>
-            Add
+          <button
+            type="button"
+            onClick={addTag}
+            className={`${styles.addButton} ${styles.little_button}`}
+          >
+            Add Tag
           </button>
         </div>
         <div className={styles.tagsContainer}>
           {tags.map((tag, index) => (
-            <div key={index} className={styles.tagItem}>
+            <div key={index} className={styles.tagInputContainer}>
               <input
                 type="text"
-                value={tag.name}
-                onChange={(e) => updateTag(index, e.target.value)}
-                className={styles.inputField}
+                value={tag} // Просто используем строку
+                onChange={(e) => {
+                  const updatedTags = [...tags];
+                  updatedTags[index] = e.target.value;
+                  setTags(updatedTags);
+                }}
+                className={styles.tagInputField}
               />
               <button
                 type="button"
                 onClick={() => removeTag(index)}
-                className={styles.deleteButton}
+                className={`${styles.deleteButton} ${styles.little_button}`}
               >
                 Delete
               </button>

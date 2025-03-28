@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { fetchArticle } from "../redux/SingleArticleSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -12,6 +12,7 @@ import { Avatar } from "antd";
 const SingleArticle = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Хук для навигации
   const articleData = useSelector((store) => store.article);
   const loading = useSelector((store) => store.article.loading);
 
@@ -40,6 +41,14 @@ const SingleArticle = () => {
 
   console.log("article body is", body);
   console.log("article tagList is", tagList);
+
+  const handleEditClick = () => {
+    // Переход на страницу редактирования
+    navigate(`/articles/${slug}/edit`, {
+      state: { articleData }, // Передаем данные статьи через state
+    });
+  };
+
   return loading ? (
     "Loading..."
   ) : (
@@ -80,7 +89,12 @@ const SingleArticle = () => {
               <button className={`${style.button} ${style.delete}`}>
                 Delete
               </button>
-              <button className={`${style.button} ${style.edit}`}>Edit</button>
+              <button
+                className={`${style.button} ${style.edit}`}
+                onClick={handleEditClick} // Обработчик клика
+              >
+                Edit
+              </button>
             </div>
           ) : null}
         </div>
@@ -92,6 +106,3 @@ const SingleArticle = () => {
 };
 
 export { SingleArticle };
-/*
-
-*/

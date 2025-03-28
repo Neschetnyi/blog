@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ArticleForm } from "../components/ArticleForm/ArticleForm"; // Импортируем форму
+import style from "./ArticleForm.module.scss";
 
 const CreateArticlePage = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const CreateArticlePage = () => {
   };
 
   return (
-    <div>
+    <div className={style.container}>
       <h2>Create New Article</h2>
       <ArticleForm
         existingArticle={{}} // Передаем пустые данные для создания новой статьи
