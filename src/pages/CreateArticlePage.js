@@ -2,13 +2,20 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ArticleForm } from "../components/ArticleForm/ArticleForm"; // Импортируем форму
 import style from "./ArticleForm.module.scss";
+import { createArticle } from "../redux/SingleArticleSlice";
+import { useDispatch } from "react-redux";
+import { fetchArticles } from "../redux/articlesListSlice";
 
 const CreateArticlePage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleCreateArticle = (formData) => {
-    console.log("Creating article:", formData);
-    // Здесь можно отправить данные на сервер или сохранить в store
+    let user = JSON.parse(localStorage.getItem("user"));
+    formData.token = user.token;
+    console.log("Creating article formData:", formData);
+
+    dispatch(createArticle(formData)).then(() => dispatch(fetchArticles()));
     navigate("/"); // Перенаправляем после успешного создания
   };
 

@@ -49,7 +49,10 @@ export const loginUser = createAsyncThunk(
         console.log("loginUser Response Login User:", response.data);
         localStorage.setItem(
           "user",
-          JSON.stringify({ token: response.data.user.token })
+          JSON.stringify({
+            token: response.data.user.token,
+            username: response.data.user.username,
+          })
         );
         return response.data;
       })

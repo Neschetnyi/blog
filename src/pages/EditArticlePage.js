@@ -2,10 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ArticleForm } from "../components/ArticleForm/ArticleForm"; // Импортируем форму
 import style from "./ArticleForm.module.scss";
+import { useDispatch } from "react-redux";
+import { updateArticle } from "../redux/SingleArticleSlice";
+import { fetchArticles } from "../redux/articlesListSlice";
 
 const EditArticlePage = () => {
   const location = useLocation();
   const { articleData } = location.state || {}; // Извлекаем данные из state
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  console.log("articleData in EditArticalPage");
 
   const [formData, setFormData] = useState({
     title: "",
@@ -34,9 +41,12 @@ const EditArticlePage = () => {
 
   // Функция для обработки отправки данных
   const handleEditArticle = (updatedData) => {
+    let user = JSON.parse(localStorage.getItem("user"));
+    updatedData.token = user.token;
+    updatedData.slug = articleData.article.slug;
     console.log("Updated article data:", updatedData);
-    // Здесь можно отправить данные на сервер, например, с помощью dispatch
-    // dispatch(updateArticle(updatedData));
+    dispatch(updateArticle(updatedData)).then(() => dispatch(fetchArticles()));
+    navigate("/");
   };
 
   return (

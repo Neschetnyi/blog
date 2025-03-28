@@ -25,6 +25,103 @@ export const fetchArticle = createAsyncThunk(
   }
 );
 
+export const createArticle = createAsyncThunk(
+  "article/createArticle",
+  (data, { rejectWithValue }) => {
+    const url = `https://blog-platform.kata.academy/api/articles`;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    const axiosData = {
+      article: {
+        title: data.title,
+        description: data.description,
+        body: data.text,
+        tagList: data.tags,
+      },
+    };
+
+    console.log("article/createArticle  axiosData", axiosData);
+    return axios
+      .post(url, axiosData, config)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        console.log("createArticle Error:", error.response?.data);
+        return rejectWithValue(error.response?.data);
+      });
+  }
+);
+
+export const updateArticle = createAsyncThunk(
+  "article/updateArticle",
+  (data, { rejectWithValue }) => {
+    const url = `https://blog-platform.kata.academy/api/
+/articles/${data.slug}`;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    const axiosData = {
+      article: {
+        title: data.title,
+        description: data.description,
+        body: data.text,
+        tagList: data.tags,
+        slug: data.slug,
+      },
+    };
+
+    console.log("article/updateArticle  axiosData", axiosData);
+    return axios
+      .put(url, axiosData, config)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        console.log("updateArticle Error:", error.response?.data);
+        return rejectWithValue(error.response?.data);
+      });
+  }
+);
+
+export const deleteArticle = createAsyncThunk(
+  "article/deleteArticle",
+  (data, { rejectWithValue }) => {
+    const url = `https://blog-platform.kata.academy/api/
+/articles/${data.slug}`;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    console.log("article/deleteArticle  axiosData", config);
+    return axios
+      .delete(url, config)
+      .then((response) => {
+        console.log("article/deleteArticle  response", response);
+        return response.data;
+      })
+      .catch((error) => {
+        console.log("deleteArticle Error:", error.response?.data);
+        return rejectWithValue(error.response?.data);
+      });
+  }
+);
+
 const SingleArticleSlice = createSlice({
   name: "article",
   initialState,

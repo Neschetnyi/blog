@@ -72,6 +72,7 @@ const ArticleForm = ({ existingArticle = {}, existingTags = [], onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <input type="hidden" value={existingArticle.slug} {...register("slug")} />
       <div className={styles.inputGroup}>
         <label>Title</label>
         <input

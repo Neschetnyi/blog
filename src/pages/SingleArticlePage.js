@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchArticle } from "../redux/SingleArticleSlice";
+import { deleteArticle, fetchArticle } from "../redux/SingleArticleSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
@@ -8,6 +8,7 @@ import { HeartOutlined } from "@ant-design/icons";
 import { Rate } from "antd";
 import { Tag } from "antd";
 import { Avatar } from "antd";
+import { fetchArticles } from "../redux/articlesListSlice";
 
 const SingleArticle = () => {
   const { slug } = useParams();
@@ -20,7 +21,7 @@ const SingleArticle = () => {
     dispatch(fetchArticle(slug));
   }, [slug, dispatch]);
 
-  console.log("articleData is", articleData);
+  console.log("articleData in SingleArticalPage is", articleData);
 
   const {
     body,
@@ -43,10 +44,33 @@ const SingleArticle = () => {
   console.log("article tagList is", tagList);
 
   const handleEditClick = () => {
-    // Переход на страницу редактирования
-    navigate(`/articles/${slug}/edit`, {
-      state: { articleData }, // Передаем данные статьи через state
-    });
+    const user = JSON.parse(localStorage.getItem("user"));
+    const username = user.username;
+
+    if (author.username === username) {
+      navigate(`/articles/${slug}/edit`, {
+        state: { articleData },
+      });
+    } else {
+      alert("forbidden");
+    }
+  };
+
+  const handleDeleteClick = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const username = user.username;
+    const token = user.token;
+    const data = {
+      token,
+      slug: slug,
+    };
+
+    if (author.username === username) {
+      dispatch(deleteArticle(data)).then(() => dispatch(fetchArticles()));
+      navigate("/");
+    } else {
+      alert("forbidden");
+    }
   };
 
   return loading ? (
@@ -86,7 +110,10 @@ const SingleArticle = () => {
           <div className={style.description}>{description}</div>
           {localStorage.getItem("user") ? (
             <div className={style.button_container}>
-              <button className={`${style.button} ${style.delete}`}>
+              <button
+                className={`${style.button} ${style.delete}`}
+                onClick={handleDeleteClick}
+              >
                 Delete
               </button>
               <button
