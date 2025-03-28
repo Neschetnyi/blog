@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/blog/static/css/main.06cfa0b1.css",
+    "main.js": "/blog/static/js/main.744a6327.js",
+    "static/media/Inter-V.ttf": "/blog/static/media/Inter-V.89a1d07172df41191baa.ttf",
+    "index.html": "/blog/index.html",
+    "main.06cfa0b1.css.map": "/blog/static/css/main.06cfa0b1.css.map",
+    "main.744a6327.js.map": "/blog/static/js/main.744a6327.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.06cfa0b1.css",
+    "static/js/main.744a6327.js"
+  ]
+}
