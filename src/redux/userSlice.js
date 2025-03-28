@@ -23,11 +23,8 @@ export const createUser = createAsyncThunk(
     };
     return axios
       .post(`${url}`, postData)
-      .then((response) => {
-        console.log("createUser Response Create User:", response.data);
-      })
+      .then((response) => {})
       .catch((error) => {
-        console.log("createUser response errors", error.response.data);
         return rejectWithValue(error.response.data);
       });
   }
@@ -46,7 +43,6 @@ export const loginUser = createAsyncThunk(
     return axios
       .post(`${url}`, postData)
       .then((response) => {
-        console.log("loginUser Response Login User:", response.data);
         localStorage.setItem(
           "user",
           JSON.stringify({
@@ -57,7 +53,6 @@ export const loginUser = createAsyncThunk(
         return response.data;
       })
       .catch((error) => {
-        console.log("loginUser response errors", error.response.data);
         return rejectWithValue(error.response.data);
       });
   }
@@ -88,11 +83,9 @@ export const updateUser = createAsyncThunk(
     return axios
       .put(url, postData, config)
       .then((response) => {
-        console.log("UpdateUser Response:", response.data);
         return response.data;
       })
       .catch((error) => {
-        console.log("UpdateUser Error:", error.response?.data);
         return rejectWithValue(error.response?.data);
       });
   }
@@ -109,7 +102,6 @@ export const getUser = createAsyncThunk(
         "Content-Type": "application/json",
       },
     };
-    console.log("user/getUser  config", config);
 
     return axios
       .get(url, config)
@@ -117,7 +109,6 @@ export const getUser = createAsyncThunk(
         return response.data;
       })
       .catch((error) => {
-        console.log("getUser Error:", error.response?.data);
         return rejectWithValue(error.response?.data);
       });
   }

@@ -9,11 +9,20 @@ const initialState = {
 
 export const fetchArticle = createAsyncThunk(
   "article/fetchArticle",
-  (slug, { rejectWithValue }) => {
-    const url = `https://blog-platform.kata.academy/api/articles/${slug}`;
+  (data, { rejectWithValue }) => {
+    console.log("data in single artical slise fetch", data);
+
+    const url = `https://blog-platform.kata.academy/api/articles/${data.slug}`;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+        "Content-Type": "application/json",
+      },
+    };
 
     return axios
-      .get(`${url}`)
+      .get(url, config)
       .then((response) => {
         console.log("article when fetching", response.data.article);
 
@@ -91,6 +100,58 @@ export const updateArticle = createAsyncThunk(
       .catch((error) => {
         console.log("updateArticle Error:", error.response?.data);
         return rejectWithValue(error.response?.data);
+      });
+  }
+);
+
+export const favoriteArticle = createAsyncThunk(
+  "article/favoriteArticle",
+  (data, { rejectWithValue }) => {
+    const url = `https://blog-platform.kata.academy/api/articles/${data.slug}/favorite`;
+    console.log("article/favoriteArticle data", data);
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    return axios
+      .post(url, {}, config) // Второй аргумент — пустой объект (тело запроса)
+      .then((response) => {
+        console.log("article when favorite", response);
+        return response.data;
+      })
+      .catch((error) => {
+        console.log("article when favorite error", error.message);
+        return rejectWithValue(error.response?.data || error.message);
+      });
+  }
+);
+
+export const unfavoriteArticle = createAsyncThunk(
+  "article/unfavoriteArticle",
+  (data, { rejectWithValue }) => {
+    const url = `https://blog-platform.kata.academy/api/articles/${data.slug}/favorite`;
+    console.log("article/unfavoriteArticle data", data);
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    return axios
+      .delete(url, config) // Второй аргумент — пустой объект (тело запроса)
+      .then((response) => {
+        console.log("article when unfavoriteArticle", response);
+        return response.data;
+      })
+      .catch((error) => {
+        console.log("article when unfavoriteArticle error", error.message);
+        return rejectWithValue(error.response?.data || error.message);
       });
   }
 );

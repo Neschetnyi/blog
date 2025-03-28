@@ -50,7 +50,7 @@ function SignInPage() {
             });
           }
         } else {
-          navigate(fromPage, { replace: true });
+          navigate("/");
         }
       })
       .catch((error) => {

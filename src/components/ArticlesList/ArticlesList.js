@@ -12,7 +12,13 @@ const ArticlesList = () => {
   const username = useSelector((store) => store.user.username);
 
   useEffect(() => {
-    dispatch(fetchArticles());
+    let user = JSON.parse(localStorage.getItem("user"));
+    let token = "";
+    if (user) {
+      token = user.token;
+    }
+
+    dispatch(fetchArticles(token));
   }, [page, username]);
   return (
     <div>

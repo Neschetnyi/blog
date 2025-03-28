@@ -5,8 +5,16 @@ import { Rate } from "antd";
 import { Tag } from "antd";
 import { Avatar } from "antd";
 import { CustomLink } from "../../CustomLink/CustomLink";
+import { useDispatch } from "react-redux";
+import {
+  favoriteArticle,
+  fetchArticle,
+  unfavoriteArticle,
+} from "../../../redux/SingleArticleSlice";
+import { fetchArticles } from "../../../redux/articlesListSlice";
 
 const ArticleCard = ({ article }) => {
+  const dispatch = useDispatch();
   const creationDate = new Date(article.createdAt).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -16,6 +24,23 @@ const ArticleCard = ({ article }) => {
 
   const handleClick = () => {
     console.log(article);
+  };
+
+  const handleFavorite = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    let data = {
+      token: user ? user.token : "",
+      slug: article.slug,
+    };
+    if (article.favorited) {
+      dispatch(unfavoriteArticle(data)).then(() => {
+        dispatch(fetchArticles(data.token));
+      });
+    } else if (user) {
+      dispatch(favoriteArticle(data)).then(() => {
+        dispatch(fetchArticles(data.token));
+      });
+    }
   };
 
   return (
@@ -32,6 +57,8 @@ const ArticleCard = ({ article }) => {
               count={1}
               character={<HeartOutlined />}
               disabled={!localStorage.getItem("user")}
+              value={article.favorited ? 1 : null}
+              onClick={handleFavorite}
             />
             <span className={style.favoritesCount}>
               {article.favoritesCount}

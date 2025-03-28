@@ -1,5 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { deleteArticle, fetchArticle } from "../redux/SingleArticleSlice";
+import {
+  deleteArticle,
+  favoriteArticle,
+  fetchArticle,
+  unfavoriteArticle,
+} from "../redux/SingleArticleSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -15,10 +20,6 @@ const SingleArticle = () => {
   const articleData = useSelector((store) => store.article);
   const loading = useSelector((store) => store.article.loading);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  useEffect(() => {
-    dispatch(fetchArticle(slug));
-  }, []);
 
   const {
     body,
@@ -36,6 +37,20 @@ const SingleArticle = () => {
     month: "long",
     day: "numeric",
   });
+
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem("user"));
+
+    let token = "";
+    if (user) {
+      token = user.token;
+    }
+    let data = {
+      token: token,
+      slug: slug,
+    };
+    dispatch(fetchArticle(data));
+  }, [dispatch, slug]);
 
   const handleEditClick = () => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -70,6 +85,23 @@ const SingleArticle = () => {
     setIsModalVisible(false);
   };
 
+  const handleFavorite = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    let data = {
+      token: user ? user.token : "",
+      slug: slug,
+    };
+    if (favorited) {
+      dispatch(unfavoriteArticle(data)).then(() => {
+        dispatch(fetchArticle(data));
+      });
+    } else if (user) {
+      dispatch(favoriteArticle(data)).then(() => {
+        dispatch(fetchArticle(data));
+      });
+    }
+  };
+
   return loading ? (
     "Loading..."
   ) : (
@@ -82,6 +114,8 @@ const SingleArticle = () => {
               count={1}
               character={<HeartOutlined />}
               disabled={!localStorage.getItem("user")}
+              onClick={handleFavorite}
+              value={favorited ? 1 : null}
             />
             <span className={style.favoritesCount}>{favoritesCount}</span>
           </div>

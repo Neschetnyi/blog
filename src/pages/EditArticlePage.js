@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { ArticleForm } from "../components/ArticleForm/ArticleForm"; // Импортируем форму
+import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { ArticleForm } from "../components/ArticleForm/ArticleForm";
 import style from "./ArticleForm.module.scss";
-import { useDispatch } from "react-redux";
-import { updateArticle } from "../redux/SingleArticleSlice";
+import { updateArticle, fetchArticle } from "../redux/SingleArticleSlice";
 import { fetchArticles } from "../redux/articlesListSlice";
 
 const EditArticlePage = () => {
   const location = useLocation();
-  const { articleData } = location.state || {}; // Извлекаем данные из state
+  const { slug } = useParams(); // Получаем slug из URL
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  console.log("articleData in EditArticalPage");
+  const articleData = useSelector((state) => state.article.article); // Данные статьи из Redux
+  const loading = useSelector((state) => state.article.loading);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -22,29 +22,29 @@ const EditArticlePage = () => {
   });
 
   useEffect(() => {
+    if (!location.state?.articleData) {
+      dispatch(fetchArticle(slug)); // Загружаем статью, если её нет в `state`
+    }
+  }, [slug, location.state, dispatch]);
+
+  useEffect(() => {
     if (articleData) {
-      // Если данные статьи существуют, обновляем состояние
       setFormData({
-        title: articleData.article.title || "",
-        description: articleData.article.description || "",
-        body: articleData.article.body || "",
-        tagList: articleData.article.tagList || [],
+        title: articleData.title || "",
+        description: articleData.description || "",
+        body: articleData.body || "",
+        tagList: articleData.tagList || [],
       });
     }
   }, [articleData]);
 
-  console.log("articleData in EditPage", articleData);
+  if (loading) return <div>Loading...</div>;
+  if (!articleData) return <div>Article data is not available.</div>;
 
-  if (!articleData) {
-    return <div>Article data is not available.</div>;
-  }
-
-  // Функция для обработки отправки данных
   const handleEditArticle = (updatedData) => {
     let user = JSON.parse(localStorage.getItem("user"));
     updatedData.token = user.token;
-    updatedData.slug = articleData.article.slug;
-    console.log("Updated article data:", updatedData);
+    updatedData.slug = articleData.slug;
     dispatch(updateArticle(updatedData)).then(() => dispatch(fetchArticles()));
     navigate("/");
   };
@@ -52,11 +52,10 @@ const EditArticlePage = () => {
   return (
     <div className={style.container}>
       <h2>Edit Article</h2>
-      {/* Передаем данные статьи в компонент формы */}
       <ArticleForm
-        existingArticle={formData} // Передаем данные из состояния
-        existingTags={formData.tagList} // Теги из состояния
-        onSubmit={handleEditArticle} // Обработчик отправки данных
+        existingArticle={formData}
+        existingTags={formData.tagList}
+        onSubmit={handleEditArticle}
       />
     </div>
   );

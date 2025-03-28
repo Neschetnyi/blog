@@ -13,7 +13,7 @@ const initialState = {
 
 export const fetchArticles = createAsyncThunk(
   "articles/fetchArticles",
-  (_, { getState, rejectWithValue }) => {
+  (token, { getState, rejectWithValue }) => {
     const { perPage, pageNumber } = getState().articlesList;
     const offset = (pageNumber - 1) * perPage;
     const params = new URLSearchParams({
@@ -23,8 +23,16 @@ export const fetchArticles = createAsyncThunk(
 
     const url = `https://blog-platform.kata.academy/api/articles?${params.toString()}`;
 
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    console.log("token in articals slise fetch articles", token);
+
     return axios
-      .get(`${url}`)
+      .get(url, config)
       .then((response) => {
         console.log(response);
 
