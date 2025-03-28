@@ -59,14 +59,46 @@
 }
 
 .text_container {
-  width: 682px;
+  width: 96%;
   font-size: $font-size-sm;
   color: $text-color;
   margin-left: 10px;
   overflow: hidden;
 }
 
+.description_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .description {
   color: $text-color-secondary;
   font-size: $font-size-sm;
+}
+
+.button {
+  border: 0;
+  background-color: transparent;
+  font-size: $H6;
+  margin-left: 22px;
+  cursor: pointer;
+}
+
+.edit {
+  word-wrap: normal;
+  font-size: $font-size-lg;
+  border: 1px #52c41a solid;
+  border-radius: 3px;
+  color: #52c41a;
+  padding: 5px;
+}
+
+.delete {
+  word-wrap: normal;
+  font-size: $font-size-lg;
+  border: 1px $highlight-color solid;
+  border-radius: 3px;
+  color: $highlight-color;
+  padding: 5px;
 }

@@ -5,7 +5,7 @@ import * as yup from "yup";
 import styles from "./SignUpPage.module.scss";
 import { loginUser } from "../redux/userSlice";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   email: yup
@@ -20,6 +20,8 @@ const schema = yup.object().shape({
 });
 
 function SignInPage() {
+  const location = useLocation();
+  const fromPage = location.state?.from?.pathname || "/";
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -48,7 +50,7 @@ function SignInPage() {
             });
           }
         } else {
-          navigate("/");
+          navigate(fromPage, { replace: true });
         }
       })
       .catch((error) => {

@@ -73,7 +73,18 @@ const SingleArticle = () => {
         </div>
       </div>
       <div className={style.text_container}>
-        <div className={style.description}>{description}</div>
+        <div className={style.description_container}>
+          <div className={style.description}>{description}</div>
+          {localStorage.getItem("user") ? (
+            <div className={style.button_container}>
+              <button className={`${style.button} ${style.delete}`}>
+                Delete
+              </button>
+              <button className={`${style.button} ${style.edit}`}>Edit</button>
+            </div>
+          ) : null}
+        </div>
+
         <ReactMarkdown>{markdown}</ReactMarkdown>
       </div>
     </div>

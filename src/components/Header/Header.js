@@ -31,7 +31,7 @@ const Header = () => {
               className={`${style.button} ${style.createArticle}`}
               onClick={() => {
                 console.log("Create Article");
-                navigate("/");
+                navigate("/new-article");
               }}
             >
               Create Article
