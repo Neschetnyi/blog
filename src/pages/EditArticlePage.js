@@ -45,7 +45,9 @@ const EditArticlePage = () => {
     let user = JSON.parse(localStorage.getItem("user"));
     updatedData.token = user.token;
     updatedData.slug = articleData.slug;
-    dispatch(updateArticle(updatedData)).then(() => dispatch(fetchArticles()));
+    dispatch(updateArticle(updatedData)).then(() =>
+      dispatch(fetchArticles(updatedData.token))
+    );
     navigate("/");
   };
 

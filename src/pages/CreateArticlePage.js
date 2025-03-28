@@ -15,7 +15,9 @@ const CreateArticlePage = () => {
     formData.token = user.token;
     console.log("Creating article formData:", formData);
 
-    dispatch(createArticle(formData)).then(() => dispatch(fetchArticles()));
+    dispatch(createArticle(formData)).then(() =>
+      dispatch(fetchArticles(formData.token))
+    );
     navigate("/"); // Перенаправляем после успешного создания
   };
 

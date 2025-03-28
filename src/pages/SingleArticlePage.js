@@ -79,7 +79,7 @@ const SingleArticle = () => {
     if (user?.username === author?.username) {
       const token = user.token;
       const data = { token, slug };
-      dispatch(deleteArticle(data)).then(() => dispatch(fetchArticles()));
+      dispatch(deleteArticle(data)).then(() => dispatch(fetchArticles(token)));
       navigate("/");
     }
     setIsModalVisible(false);
