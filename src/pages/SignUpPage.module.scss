@@ -20,7 +20,7 @@
 
 label {
   display: block;
-  margin-bottom: 5px; // Отступ между label и input
+  margin-bottom: 5px;
   font-size: $font-size-base;
 }
 
@@ -30,7 +30,7 @@ label {
   padding: 10px 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  box-sizing: border-box; // предотвращает выход за границы формы
+  box-sizing: border-box;
 }
 
 .inputError {
@@ -103,7 +103,7 @@ label {
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-right: 10px;
-  box-sizing: border-box; // предотвращает выход за границы формы
+  box-sizing: border-box;
 }
 
 .signInText {

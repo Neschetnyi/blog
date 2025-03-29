@@ -38,7 +38,6 @@ const ArticleForm = ({ existingArticle = {}, existingTags = [], onSubmit }) => {
     }
   }, [existingTags]);
 
-  // Обновление значений формы при изменении данных
   useEffect(() => {
     if (existingArticle.title) {
       setValue("title", existingArticle.title);
@@ -106,13 +105,12 @@ const ArticleForm = ({ existingArticle = {}, existingTags = [], onSubmit }) => {
             errors.text ? styles.inputError : ""
           }`}
           {...register("text")}
-          rows="9" // Установите количество строк по своему усмотрению
-          style={{ resize: "none" }} // Отключаем изменение размера
+          rows="9"
+          style={{ resize: "none" }}
         />
         <p className={styles.errorText}>{errors.text?.message}</p>
       </div>
 
-      {/* Поле для тегов */}
       <div className={styles.inputGroup}>
         <label>Tags</label>
         <div className={styles.tagInputContainer}>
@@ -143,7 +141,7 @@ const ArticleForm = ({ existingArticle = {}, existingTags = [], onSubmit }) => {
             <div key={index} className={styles.tagInputContainer}>
               <input
                 type="text"
-                value={tag} // Просто используем строку
+                value={tag}
                 onChange={(e) => {
                   const updatedTags = [...tags];
                   updatedTags[index] = e.target.value;

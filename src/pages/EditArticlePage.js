@@ -8,10 +8,10 @@ import { fetchArticles } from "../redux/articlesListSlice";
 
 const EditArticlePage = () => {
   const location = useLocation();
-  const { slug } = useParams(); // Получаем slug из URL
+  const { slug } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const articleData = useSelector((state) => state.article.article); // Данные статьи из Redux
+  const articleData = useSelector((state) => state.article.article);
   const loading = useSelector((state) => state.article.loading);
 
   const [formData, setFormData] = useState({
@@ -23,7 +23,7 @@ const EditArticlePage = () => {
 
   useEffect(() => {
     if (!location.state?.articleData) {
-      dispatch(fetchArticle(slug)); // Загружаем статью, если её нет в `state`
+      dispatch(fetchArticle(slug));
     }
   }, [slug, location.state, dispatch]);
 

@@ -118,7 +118,7 @@ export const favoriteArticle = createAsyncThunk(
     };
 
     return axios
-      .post(url, {}, config) // Второй аргумент — пустой объект (тело запроса)
+      .post(url, {}, config)
       .then((response) => {
         console.log("article when favorite", response);
         return response.data;
@@ -144,7 +144,7 @@ export const unfavoriteArticle = createAsyncThunk(
     };
 
     return axios
-      .delete(url, config) // Второй аргумент — пустой объект (тело запроса)
+      .delete(url, config)
       .then((response) => {
         console.log("article when unfavoriteArticle", response);
         return response.data;

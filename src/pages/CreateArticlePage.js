@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ArticleForm } from "../components/ArticleForm/ArticleForm"; // Импортируем форму
+import { ArticleForm } from "../components/ArticleForm/ArticleForm";
 import style from "./ArticleForm.module.scss";
 import { createArticle } from "../redux/SingleArticleSlice";
 import { useDispatch } from "react-redux";
@@ -18,16 +18,16 @@ const CreateArticlePage = () => {
     dispatch(createArticle(formData)).then(() =>
       dispatch(fetchArticles(formData.token))
     );
-    navigate("/"); // Перенаправляем после успешного создания
+    navigate("/");
   };
 
   return (
     <div className={style.container}>
       <h2>Create New Article</h2>
       <ArticleForm
-        existingArticle={{}} // Передаем пустые данные для создания новой статьи
-        existingTags={[]} // Передаем пустой массив для тегов
-        onSubmit={handleCreateArticle} // Функция для обработки отправки данных
+        existingArticle={{}}
+        existingTags={[]}
+        onSubmit={handleCreateArticle}
       />
     </div>
   );
