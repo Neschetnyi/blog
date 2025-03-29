@@ -14,7 +14,6 @@ const EditArticlePage = () => {
   const articleData = useSelector((state) => state.article.article);
   const loading = useSelector((state) => state.article.loading);
 
-  // Загружаем данные из localStorage, если в Redux нет статьи
   const [formData, setFormData] = useState(() => {
     const savedArticle = localStorage.getItem(`article-${slug}`);
     return savedArticle
@@ -22,7 +21,6 @@ const EditArticlePage = () => {
       : { title: "", description: "", body: "", tagList: [] };
   });
 
-  // Восстанавливаем статью из localStorage в Redux (если Redux пуст)
   useEffect(() => {
     if (!articleData) {
       const savedArticle = localStorage.getItem(`article-${slug}`);
@@ -35,9 +33,15 @@ const EditArticlePage = () => {
         dispatch(fetchArticle(slug));
       }
     }
-  }, [slug, articleData, dispatch]);
 
-  // Обновляем localStorage при изменении статьи
+    if (articleData && articleData.author?.username) {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || user.username !== articleData.author.username) {
+        navigate("/");
+      }
+    }
+  }, [slug, articleData, dispatch, navigate]);
+
   useEffect(() => {
     if (articleData && articleData.title) {
       setFormData({

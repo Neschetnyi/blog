@@ -1,17 +1,14 @@
 import style from "./ArticleCard.module.scss";
 import ReactMarkdown from "react-markdown";
 import { HeartOutlined } from "@ant-design/icons";
-import { Rate } from "antd";
-import { Tag } from "antd";
-import { Avatar } from "antd";
+import { Rate, Tag, Avatar } from "antd";
 import { CustomLink } from "../../CustomLink/CustomLink";
 import { useDispatch } from "react-redux";
 import {
   favoriteArticle,
-  fetchArticle,
   unfavoriteArticle,
 } from "../../../redux/SingleArticleSlice";
-import { fetchArticles } from "../../../redux/articlesListSlice";
+import { updateArticleLikes } from "../../../redux/articlesListSlice";
 
 const ArticleCard = ({ article }) => {
   const dispatch = useDispatch();
@@ -20,25 +17,39 @@ const ArticleCard = ({ article }) => {
     month: "long",
     day: "numeric",
   });
-  const markdown = article.description;
-
-  const handleClick = () => {
-    console.log(article);
-  };
 
   const handleFavorite = () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    let data = {
-      token: user ? user.token : "",
+    if (!user) return;
+
+    const data = {
+      token: user.token,
       slug: article.slug,
     };
+
     if (article.favorited) {
-      dispatch(unfavoriteArticle(data)).then(() => {
-        dispatch(fetchArticles(data.token));
+      dispatch(unfavoriteArticle(data)).then((response) => {
+        if (response.payload) {
+          dispatch(
+            updateArticleLikes({
+              slug: article.slug,
+              favorited: false,
+              favoritesCount: article.favoritesCount - 1,
+            })
+          );
+        }
       });
-    } else if (user) {
-      dispatch(favoriteArticle(data)).then(() => {
-        dispatch(fetchArticles(data.token));
+    } else {
+      dispatch(favoriteArticle(data)).then((response) => {
+        if (response.payload) {
+          dispatch(
+            updateArticleLikes({
+              slug: article.slug,
+              favorited: true,
+              favoritesCount: article.favoritesCount + 1,
+            })
+          );
+        }
       });
     }
   };
@@ -48,16 +59,14 @@ const ArticleCard = ({ article }) => {
       <div className={style.top_container}>
         <div className={style.title_container}>
           <div className={style.title}>
-            <CustomLink to={`/articles/${article.slug}`} onClick={handleClick}>
-              {" "}
+            <CustomLink to={`/articles/${article.slug}`}>
               {article.title}
             </CustomLink>
-
             <Rate
               count={1}
               character={<HeartOutlined />}
               disabled={!localStorage.getItem("user")}
-              value={article.favorited ? 1 : null}
+              value={article.favorited ? 1 : 0}
               onClick={handleFavorite}
             />
             <span className={style.favoritesCount}>
@@ -65,11 +74,9 @@ const ArticleCard = ({ article }) => {
             </span>
           </div>
           <div className={style.tag_container}>
-            {article.tagList.length > 0 && article.tagList
-              ? article.tagList.map((tag, index) => (
-                  <Tag key={`${index}${tag}`}>{tag}</Tag>
-                ))
-              : null}
+            {article.tagList.map((tag, index) => (
+              <Tag key={`${index}${tag}`}>{tag}</Tag>
+            ))}
           </div>
         </div>
         <div className={style.author_container}>
@@ -81,7 +88,7 @@ const ArticleCard = ({ article }) => {
         </div>
       </div>
       <div className={style.text_container}>
-        <ReactMarkdown>{markdown}</ReactMarkdown>
+        <ReactMarkdown>{article.description}</ReactMarkdown>
       </div>
     </div>
   );

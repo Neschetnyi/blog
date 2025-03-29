@@ -11,12 +11,12 @@ function HomePage() {
   const total = useSelector((store) => store.articlesList.totalPages);
 
   useEffect(() => {
-    dispatch(fetchArticles(localStorage.getItem("token"))); // Загружаем статьи при монтировании
+    dispatch(fetchArticles(localStorage.getItem("token")));
   }, [dispatch]);
 
   const handleChange = (page) => {
     dispatch(change_page(page));
-    dispatch(fetchArticles(localStorage.getItem("token"))); // Обновляем статьи при смене страницы
+    dispatch(fetchArticles(localStorage.getItem("token")));
   };
 
   return (

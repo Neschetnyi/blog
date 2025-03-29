@@ -15,13 +15,11 @@ const ArticlesList = () => {
 
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("user"));
-    let token = "";
-    if (user) {
-      token = user.token;
-    }
+    let token = user ? user.token : "";
 
     dispatch(fetchArticles(token));
-  }, [page, username]);
+  }, [dispatch, page, username]);
+
   return (
     <div className={style.container}>
       {loading ? (

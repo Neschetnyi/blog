@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Avatar } from "antd";
 import { getUser, log_out } from "../../redux/userSlice";
 import { useEffect } from "react";
+import { change_page } from "../../redux/articlesListSlice";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -23,7 +24,15 @@ const Header = () => {
 
   return (
     <header className={style.header}>
-      <NavLink to="/articles">Realworld Blog</NavLink>
+      <NavLink
+        to="/articles"
+        onClick={() => {
+          localStorage.setItem("pageNumber", 1);
+          dispatch(change_page(1));
+        }}
+      >
+        Realworld Blog
+      </NavLink>
       <div className={style.buttuns_container}>
         {username && username !== "" ? (
           <>
