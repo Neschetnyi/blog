@@ -4,7 +4,7 @@ import { ArticleForm } from "../components/ArticleForm/ArticleForm";
 import style from "./ArticleForm.module.scss";
 import { createArticle } from "../redux/SingleArticleSlice";
 import { useDispatch } from "react-redux";
-import { fetchArticles } from "../redux/articlesListSlice";
+import { change_page, fetchArticles } from "../redux/articlesListSlice";
 
 const CreateArticlePage = () => {
   const navigate = useNavigate();
@@ -18,6 +18,8 @@ const CreateArticlePage = () => {
     dispatch(createArticle(formData)).then(() =>
       dispatch(fetchArticles(formData.token))
     );
+    localStorage.setItem("pageNumber", 1);
+    dispatch(change_page(1));
     navigate("/");
   };
 
