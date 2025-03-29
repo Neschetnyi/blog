@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import styles from "../../pages/SignUpPage.module.scss";
-
+//correct validation of space
 const schema = yup.object().shape({
   title: yup
     .string()
