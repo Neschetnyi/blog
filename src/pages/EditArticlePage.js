@@ -14,32 +14,45 @@ const EditArticlePage = () => {
   const articleData = useSelector((state) => state.article.article);
   const loading = useSelector((state) => state.article.loading);
 
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    body: "",
-    tagList: [],
+  // Загружаем данные из localStorage, если в Redux нет статьи
+  const [formData, setFormData] = useState(() => {
+    const savedArticle = localStorage.getItem(`article-${slug}`);
+    return savedArticle
+      ? JSON.parse(savedArticle)
+      : { title: "", description: "", body: "", tagList: [] };
   });
 
+  // Восстанавливаем статью из localStorage в Redux (если Redux пуст)
   useEffect(() => {
-    if (!location.state?.articleData) {
-      dispatch(fetchArticle(slug));
+    if (!articleData) {
+      const savedArticle = localStorage.getItem(`article-${slug}`);
+      if (savedArticle) {
+        dispatch({
+          type: "article/setArticle",
+          payload: JSON.parse(savedArticle),
+        });
+      } else {
+        dispatch(fetchArticle(slug));
+      }
     }
-  }, [slug, location.state, dispatch]);
+  }, [slug, articleData, dispatch]);
 
+  // Обновляем localStorage при изменении статьи
   useEffect(() => {
-    if (articleData) {
+    if (articleData && articleData.title) {
       setFormData({
         title: articleData.title || "",
         description: articleData.description || "",
         body: articleData.body || "",
         tagList: articleData.tagList || [],
       });
+      localStorage.setItem(`article-${slug}`, JSON.stringify(articleData));
     }
-  }, [articleData]);
+  }, [articleData, slug]);
 
-  if (loading) return <div>Loading...</div>;
-  if (!articleData) return <div>Article data is not available.</div>;
+  if (loading) return <div>Loading article...</div>;
+
+  if (!articleData) return <div>Article not found.</div>;
 
   const handleEditArticle = (updatedData) => {
     let user = JSON.parse(localStorage.getItem("user"));
