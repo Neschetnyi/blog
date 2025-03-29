@@ -5,9 +5,30 @@ import * as yup from "yup";
 import styles from "../../pages/SignUpPage.module.scss";
 
 const schema = yup.object().shape({
-  title: yup.string().required("title is required"),
-  description: yup.string().required("description is required"),
-  text: yup.string().required("text is required"),
+  title: yup
+    .string()
+    .required("Title is required")
+    .test(
+      "no-whitespace",
+      "Title cannot be empty or only spaces",
+      (value) => value.trim().length > 0
+    ),
+  description: yup
+    .string()
+    .required("Description is required")
+    .test(
+      "no-whitespace",
+      "Description cannot be empty or only spaces",
+      (value) => value.trim().length > 0
+    ),
+  text: yup
+    .string()
+    .required("Text is required")
+    .test(
+      "no-whitespace",
+      "Text cannot be empty or only spaces",
+      (value) => value.trim().length > 0
+    ),
 });
 
 const ArticleForm = ({ existingArticle = {}, existingTags = [], onSubmit }) => {
