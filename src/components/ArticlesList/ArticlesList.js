@@ -2,7 +2,9 @@ import { fetchArticles } from "../../redux/articlesListSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ArticleCard from "./ArticleCard/ArticleCard";
-import style from "./ArticlesList.scss";
+import style from "./ArticlesList.module.scss";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const ArticlesList = () => {
   const dispatch = useDispatch();
@@ -21,9 +23,11 @@ const ArticlesList = () => {
     dispatch(fetchArticles(token));
   }, [page, username]);
   return (
-    <div>
+    <div className={style.container}>
       {loading ? (
-        <div className={style.loading}>Loading...</div>
+        <div className={style.loading_container}>
+          <Spin indicator={<LoadingOutlined spin />} size="large" />
+        </div>
       ) : articles ? (
         articles.map((article) => (
           <ArticleCard key={article.slug} article={article} />

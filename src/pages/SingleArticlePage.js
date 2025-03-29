@@ -12,6 +12,8 @@ import style from "./SingleArticle.module.scss";
 import { HeartOutlined } from "@ant-design/icons";
 import { Rate, Tag, Avatar, Modal } from "antd";
 import { fetchArticles } from "../redux/articlesListSlice";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const SingleArticle = () => {
   const { slug } = useParams();
@@ -103,7 +105,13 @@ const SingleArticle = () => {
   };
 
   return loading ? (
-    "Loading..."
+    <div className={style.loading_container}>
+      <Spin
+        indicator={<LoadingOutlined spin />}
+        size="large"
+        className={style.loading_spinner}
+      />
+    </div>
   ) : (
     <div className={style.container}>
       <div className={style.top_container}>

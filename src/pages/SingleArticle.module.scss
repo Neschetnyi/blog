@@ -118,3 +118,15 @@
   padding-left: 15px;
   padding-right: 15px;
 }
+
+.loading_container {
+  display: flex;
+  width: fit-content;
+  height: 100vh;
+  margin: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: transparent;
+  justify-content: center;
+  align-items: center;
+}
